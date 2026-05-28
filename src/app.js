@@ -177,14 +177,15 @@ function renderHome() {
           <span>ONDO</span>
         </div>
         <div class="hero-content">
-          <span>${t("common.today")} · 24.6°</span>
+          <span>${t("brand.tagline")}</span>
           <h2>${t("home.headline")}</h2>
           <p>${t("home.status")}</p>
           <div class="hero-actions">
             <button class="primary-action" type="button" data-route="conversations">${t("home.primary")}</button>
-            <button class="ghost-action" type="button" data-route="conversations" data-summary-shortcut>${t("home.secondary")}</button>
+            <button class="ghost-action" type="button" data-route="schedule">${t("home.secondary")}</button>
           </div>
         </div>
+        ${renderHeroPreview()}
       </article>
       <section class="metric-grid">
         ${metric(t("home.socialLoad"), 42)}
@@ -192,16 +193,87 @@ function renderHome() {
         ${metric(t("home.clarity"), 78)}
         ${metric(t("home.scheduleFit"), 91)}
       </section>
+      <article class="panel story-panel">
+        <span class="section-kicker">01</span>
+        <h3>${t("home.problemTitle")}</h3>
+        <p>${t("home.problemBody")}</p>
+      </article>
+      <article class="panel story-panel">
+        <span class="section-kicker">02</span>
+        <h3>${t("home.understandingTitle")}</h3>
+        <p>${t("home.understandingBody")}</p>
+      </article>
+      <article class="panel wide usage-panel">
+        <div class="section-heading">
+          <span class="section-kicker">03</span>
+          <h3>${t("home.usageTitle")}</h3>
+        </div>
+        ${renderUsageExamples()}
+      </article>
       <article class="panel">
         <h3>${t("home.next")}</h3>
         ${timeline([t("home.reminder1"), t("home.reminder2"), t("home.reminder3")])}
       </article>
-      <article class="panel aurora-panel">
-        <h3>${t("home.suggestions")}</h3>
-        <p>${t("brand.subline")}</p>
-        <div class="temperature-ring"><span>24.6°</span></div>
+      <article class="panel trust-panel">
+        <span class="section-kicker">04</span>
+        <h3>${t("home.trustTitle")}</h3>
+        <p>${t("home.trustBody")}</p>
+        <div class="trust-list">
+          <span>${t("auth.secure")}</span>
+          <span>${t("settings.privacy")}</span>
+        </div>
+      </article>
+      <article class="panel wide cta-panel">
+        <div>
+          <span class="section-kicker">05</span>
+          <h3>${t("home.ctaTitle")}</h3>
+          <p>${t("home.ctaBody")}</p>
+        </div>
+        <button class="primary-action" type="button" data-route="conversations">${t("home.primary")}</button>
       </article>
     </section>
+  `;
+}
+
+function renderHeroPreview() {
+  return `
+    <div class="hero-preview" aria-hidden="true">
+      <div class="preview-message incoming">${state.lang === "ko" ? "오늘 약속 조금 미뤄도 괜찮을까?" : "Could we move today’s plan a little?"}</div>
+      <div class="preview-message outgoing">${state.lang === "ko" ? "물론이야. 편한 시간 알려줘." : "Of course. Tell me what time works."}</div>
+      <div class="preview-chip">${state.lang === "ko" ? "차분한 답장 추천" : "Calm reply suggested"}</div>
+    </div>
+  `;
+}
+
+function renderUsageExamples() {
+  const reply = state.lang === "ko"
+    ? "미안해. 오늘은 어렵고, 화요일 저녁이나 수요일 점심은 괜찮아."
+    : "Sorry, today is difficult. Tuesday evening or Wednesday lunch works.";
+  const summary = state.lang === "ko"
+    ? ["장소는 강남 선호", "예산은 1인 3만원", "예약 후 주소 공유"]
+    : ["Gangnam preferred", "Budget under $30", "Share address after booking"];
+  const schedule = state.lang === "ko" ? "토요일 · 오후 3시" : "Saturday · 3 PM";
+
+  return `
+    <div class="usage-grid">
+      <div class="usage-card">
+        <strong>${t("reply.title")}</strong>
+        <div class="mini-chat">
+          <span>${reply}</span>
+        </div>
+      </div>
+      <div class="usage-card">
+        <strong>${t("summary.title")}</strong>
+        <ul>${summary.map((item) => `<li>${item}</li>`).join("")}</ul>
+      </div>
+      <div class="usage-card">
+        <strong>${t("schedule.title")}</strong>
+        <div class="mini-calendar">
+          <span>${schedule}</span>
+          <small>${state.lang === "ko" ? "추천도 88%" : "88% fit"}</small>
+        </div>
+      </div>
+    </div>
   `;
 }
 
