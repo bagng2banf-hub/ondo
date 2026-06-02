@@ -63,14 +63,24 @@ function renderAuthScreen() {
           <span>${t("brand.name")}</span>
         </div>
         <div class="auth-copy">
-          <p class="eyebrow">${t("brand.tagline")}</p>
-          <h1>${t("auth.title")}</h1>
-          <p>${t("auth.subtitle")}</p>
+          <p class="eyebrow">${t("landing.eyebrow")}</p>
+          <h1>${t("landing.title")}</h1>
+          <p>${t("landing.body")}</p>
+          <div class="landing-actions">
+            <button class="primary-action" type="button" data-guest>${t("landing.cta")}</button>
+            <span>${t("landing.note")}</span>
+          </div>
+          <div class="feature-pills">
+            <span>${t("landing.reply")}</span>
+            <span>${t("landing.summary")}</span>
+            <span>${t("landing.plan")}</span>
+            <span>${t("landing.insight")}</span>
+          </div>
         </div>
         <div class="daily-stack" aria-label="ONDO preview">
-          ${dailyItem(t("dashboard.nextReply"), t("dashboard.nextReplyBody"))}
-          ${dailyItem(t("dashboard.plan"), t("dashboard.planBody"))}
-          ${dailyItem(t("dashboard.relationship"), t("dashboard.relationshipBody"))}
+          ${dailyItem(t("landing.previewTitle"), t("landing.previewReply"))}
+          ${dailyItem(t("dashboard.plan"), t("landing.previewPlan"))}
+          ${dailyItem(t("dashboard.relationship"), t("landing.previewMood"))}
         </div>
       </section>
       <section class="auth-card">

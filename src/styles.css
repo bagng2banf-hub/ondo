@@ -33,14 +33,14 @@ body[data-theme="light"] {
 
 body[data-theme="dark"] {
   --bg: #000000;
-  --surface: #080808;
-  --surface-strong: #111111;
+  --surface: #050505;
+  --surface-strong: #161616;
   --ink: #ffffff;
-  --muted: #c9c9c5;
-  --line: rgba(255,255,255,.16);
+  --muted: #e1e1dc;
+  --line: rgba(255,255,255,.24);
   --accent: #ffffff;
-  --soft: #171717;
-  --glow: rgba(255,255,255,.08);
+  --soft: #1d1d1d;
+  --glow: rgba(255,255,255,.12);
   background: #000000;
   color: var(--ink);
 }
@@ -70,7 +70,7 @@ h3 { font-size: clamp(18px, 1.6vw, 23px); line-height: 1.28; letter-spacing: 0; 
 .auth-screen {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(360px, .8fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, .72fr);
   gap: clamp(16px, 3vw, 32px);
   padding: clamp(16px, 3vw, 34px);
 }
@@ -94,7 +94,7 @@ h3 { font-size: clamp(18px, 1.6vw, 23px); line-height: 1.28; letter-spacing: 0; 
   padding: clamp(28px, 5vw, 70px);
   display: grid;
   align-content: space-between;
-  gap: 40px;
+  gap: 34px;
 }
 
 .brand-lockup,
@@ -130,8 +130,17 @@ body[data-theme="light"] .primary-action {
 
 .auth-copy {
   display: grid;
-  gap: 16px;
-  max-width: 780px;
+  gap: 14px;
+  max-width: 720px;
+}
+
+.auth-copy h1 {
+  max-width: 680px;
+}
+
+.auth-copy p {
+  font-size: clamp(17px, 1.6vw, 21px);
+  max-width: 560px;
 }
 
 .eyebrow,
@@ -148,8 +157,34 @@ body[data-theme="light"] .primary-action {
   gap: 14px;
 }
 
+.landing-actions,
+.feature-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.landing-actions {
+  margin-top: 10px;
+}
+
+.landing-actions span,
+.feature-pills span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.feature-pills span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 12px;
+  background: var(--surface-strong);
+}
+
 .daily-item {
-  padding: 18px;
+  padding: 16px;
   display: grid;
   gap: 8px;
   transition: transform var(--speed), border-color var(--speed), background-color var(--speed);
@@ -161,7 +196,7 @@ body[data-theme="light"] .primary-action {
 }
 
 .daily-item strong { font-size: 15px; }
-.daily-item p { font-size: 14px; }
+.daily-item p { font-size: 13px; line-height: 1.5; }
 
 .auth-card {
   align-self: center;
@@ -522,6 +557,30 @@ body[data-theme="dark"] .time-slot.is-active {
   color: #000000;
 }
 
+body[data-theme="dark"] .auth-hero,
+body[data-theme="dark"] .auth-card,
+body[data-theme="dark"] .panel,
+body[data-theme="dark"] .daily-item,
+body[data-theme="dark"] .statement-card,
+body[data-theme="dark"] .insight-card,
+body[data-theme="dark"] .response-card,
+body[data-theme="dark"] .calendar-card {
+  box-shadow: none;
+}
+
+body[data-theme="dark"] .ghost-action,
+body[data-theme="dark"] .secondary-action,
+body[data-theme="dark"] .copy-mini,
+body[data-theme="dark"] .response-card button,
+body[data-theme="dark"] .mini-profile button,
+body[data-theme="dark"] .split-actions button,
+body[data-theme="dark"] .theme-pills button,
+body[data-theme="dark"] .tone-grid button,
+body[data-theme="dark"] .settings-list button {
+  background: #151515;
+  border-color: rgba(255,255,255,.28);
+}
+
 .availability-summary,
 .soft-note,
 .calendar-card {
@@ -621,6 +680,7 @@ body[data-theme="dark"] .time-slot.is-active {
   }
 
   .mobile-brand { display: flex; }
+  .landing-actions .primary-action { width: 100%; }
   .topbar { flex-direction: column; }
   .top-actions { justify-content: flex-start; }
   .side-nav { padding: 14px; gap: 14px; }
