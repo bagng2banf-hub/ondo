@@ -265,7 +265,7 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 12px 30px var(--glow);
 }
 
-.ghost-action, .secondary-action, .copy-mini, .response-card button, .mini-profile button, .split-actions button, .theme-pills button, .tone-grid button, .mood-selector button {
+.ghost-action, .secondary-action, .copy-mini, .response-card button, .mini-profile button, .split-actions button, .theme-pills button, .tone-grid button {
   border: 1px solid var(--line);
   background: var(--surface-strong);
   color: var(--ink);
@@ -317,7 +317,7 @@ input:focus, textarea:focus, select:focus {
   color: var(--muted);
 }
 
-.side-nav nav button.is-active, .side-nav nav button:hover, .theme-pills button.is-active, .tone-grid button.is-active, .mood-selector button.is-active, .settings-list button.is-active {
+.side-nav nav button.is-active, .side-nav nav button:hover, .theme-pills button.is-active, .tone-grid button.is-active, .settings-list button.is-active {
   color: var(--ink);
   background: var(--surface-strong);
   border-color: var(--line);
@@ -373,10 +373,155 @@ input:focus, textarea:focus, select:focus {
   padding: 0 12px;
 }
 
-.home-grid, .tool-layout, .mood-grid, .settings-grid {
+.home-grid, .tool-layout, .settings-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: var(--space);
+}
+
+.product-page {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space);
+  margin-bottom: var(--space);
+}
+
+.product-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.product-intro h2 {
+  max-width: 840px;
+  margin: 8px 0 14px;
+}
+
+.product-intro p {
+  font-size: 17px;
+}
+
+.real-preview-grid,
+.relationship-grid {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.real-preview-grid.two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.real-preview-card,
+.statement-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 22px;
+  min-height: 240px;
+  box-shadow: 0 18px 54px rgba(0,0,0,.07);
+}
+
+.real-preview-card {
+  display: grid;
+  gap: 18px;
+}
+
+.real-preview-card strong,
+.statement-card strong {
+  font-size: 17px;
+}
+
+.statement-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-height: 180px;
+}
+
+.statement-card p {
+  font-size: 15px;
+}
+
+.phone-frame,
+.summary-preview,
+.rewrite-preview,
+.planning-preview,
+.poll-preview {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  padding: 16px;
+}
+
+.phone-frame,
+.summary-preview,
+.rewrite-preview,
+.poll-preview {
+  display: grid;
+  gap: 10px;
+}
+
+.bubble {
+  justify-self: end;
+  max-width: 82%;
+  margin: 0;
+  padding: 11px 13px;
+  border-radius: 16px;
+  background: var(--ink);
+  color: var(--bg);
+  line-height: 1.5;
+}
+
+.bubble.muted {
+  justify-self: start;
+  background: color-mix(in srgb, var(--muted) 14%, var(--surface-strong));
+  color: var(--ink);
+}
+
+.suggestion-line,
+.summary-preview span,
+.poll-preview span {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--surface-strong) 84%, var(--bg));
+}
+
+.rewrite-preview span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.rewrite-preview p {
+  color: var(--ink);
+}
+
+.planning-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.planning-preview div {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.planning-preview span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.poll-preview b {
+  margin-top: 4px;
 }
 
 .hero-panel {
@@ -682,14 +827,14 @@ body[data-theme="light"] .hero-content span {
 .input-panel.wide, .result-panel.wide, .schedule-board.wide { grid-column: span 12; }
 
 .input-panel h2, .input-panel p { margin-bottom: 12px; }
-.tone-grid, .mood-selector, .settings-list {
+.tone-grid, .settings-list {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin: 14px 0;
 }
 
-.tone-grid button, .mood-selector button {
+.tone-grid button {
   min-height: 40px;
   border-radius: 999px;
   padding: 0 14px;
@@ -750,13 +895,6 @@ body[data-theme="light"] .hero-content span {
   background: color-mix(in srgb, var(--accent) 8%, var(--surface-strong));
 }
 
-.mood-orbit {
-  grid-column: span 6;
-  text-align: center;
-  display: grid;
-  place-items: center;
-}
-
 .view-enter { animation: viewIn 360ms ease both; }
 
 .has-error input:invalid { border-color: #e06464; }
@@ -785,8 +923,10 @@ body[data-theme="light"] .hero-content span {
   }
   .side-nav nav { grid-template-columns: repeat(3, 1fr); }
   .mini-profile { display: none; }
-  .hero-panel, .metric-grid, .panel, .input-panel, .result-panel, .mood-orbit { grid-column: span 12; }
-  .usage-grid { grid-template-columns: 1fr; }
+  .hero-panel, .metric-grid, .panel, .input-panel, .result-panel { grid-column: span 12; }
+  .usage-grid, .real-preview-grid, .real-preview-grid.two, .relationship-grid { grid-template-columns: 1fr; }
+  .product-intro { align-items: stretch; flex-direction: column; }
+  .product-intro .primary-action { align-self: start; }
 }
 
 @media (max-width: 680px) {
@@ -795,7 +935,8 @@ body[data-theme="light"] .hero-content span {
   .entry-screen, .auth-screen { gap: 14px; }
   .topbar { flex-direction: column; }
   .side-nav nav { grid-template-columns: 1fr 1fr; }
-  .home-grid, .tool-layout, .mood-grid, .settings-grid { gap: 14px; }
+  .home-grid, .tool-layout, .settings-grid { gap: 14px; }
+  .product-page { gap: 14px; margin-bottom: 14px; }
   .insight-grid, .schedule-grid, .metric-grid.compact { grid-template-columns: 1fr; }
   .panel, .entry-panel, .auth-card { padding: 20px; border-radius: 20px; }
   .hero-panel { min-height: 620px; }
@@ -804,4 +945,7 @@ body[data-theme="light"] .hero-content span {
   .hero-preview { left: 20px; right: 20px; bottom: 20px; width: auto; }
   .cta-panel { align-items: stretch; flex-direction: column; }
   .cta-panel .primary-action { width: 100%; }
+  .real-preview-card, .statement-card { min-height: auto; padding: 18px; border-radius: 20px; }
+  .planning-preview { grid-template-columns: 1fr; }
+  .product-intro .primary-action { width: 100%; }
 }

@@ -4,14 +4,14 @@ const STORAGE_KEY = "ondo.session.v1";
 const state = loadSession();
 const app = document.querySelector("#app");
 
-const navItems = ["home", "conversations", "schedule", "insights", "mood", "settings"];
+const navItems = ["conversations", "relationships", "planning", "insights", "settings"];
 const themes = ["light", "dark", "warm"];
-const toneKeys = ["soft", "natural", "professional", "romantic", "cute", "calm", "concise"];
+const toneKeys = ["friendly", "casual", "professional", "romantic", "supportive", "honest", "direct"];
 
 render();
 
 function loadSession() {
-  const fallback = { lang: null, authed: false, user: null, theme: "dark", route: "home", mood: "calm" };
+  const fallback = { lang: null, authed: false, user: null, theme: "dark", route: "conversations" };
   try {
     return { ...fallback, ...JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "{}") };
   } catch {
@@ -31,6 +31,7 @@ function t(path) {
 function render() {
   document.documentElement.lang = state.lang || "ko";
   document.body.dataset.theme = state.theme;
+  if (state.authed && !navItems.includes(state.route)) state.route = "conversations";
 
   if (!state.lang) {
     app.innerHTML = renderLanguageScreen();
@@ -155,17 +156,17 @@ function renderTopbar() {
 }
 
 function routeTitle() {
-  if (state.route === "home") return t("home.greeting");
   if (state.route === "conversations") return t("reply.title");
+  if (state.route === "relationships") return t("relationships.title");
+  if (state.route === "planning") return t("planning.title");
   return t(`${state.route}.title`);
 }
 
 function renderRoute() {
-  if (state.route === "home") return renderHome();
   if (state.route === "conversations") return renderConversationTool();
-  if (state.route === "schedule") return renderScheduleTool();
+  if (state.route === "relationships") return renderRelationshipsTool();
+  if (state.route === "planning") return renderPlanningTool();
   if (state.route === "insights") return renderInsightsTool();
-  if (state.route === "mood") return renderMood();
   return renderSettings();
 }
 
@@ -277,15 +278,119 @@ function renderUsageExamples() {
   `;
 }
 
+function renderProductIntro({ kicker, title, body, action, route }) {
+  return `
+    <article class="product-intro panel wide">
+      <div>
+        <span class="section-kicker">${kicker}</span>
+        <h2>${title}</h2>
+        <p>${body}</p>
+      </div>
+      <button class="primary-action" type="button" data-route="${route}">${action}</button>
+    </article>
+  `;
+}
+
+function renderChatScreenshot() {
+  return `
+    <article class="real-preview-card">
+      <strong>${t("reply.title")}</strong>
+      <div class="phone-frame">
+        <p class="bubble muted">${state.lang === "ko" ? "오늘 말투가 너무 딱딱했나?" : "Did my message sound too cold?"}</p>
+        <p class="bubble">${state.lang === "ko" ? "조금 더 부드럽게 바꾸면 좋아요." : "A softer version may land better."}</p>
+        <p class="suggestion-line">${state.lang === "ko" ? "추천: 부담스럽지 않게 다시 말하기" : "Suggested: rephrase without pressure"}</p>
+      </div>
+    </article>
+  `;
+}
+
+function renderSummaryScreenshot() {
+  const items = state.lang === "ko"
+    ? ["장소는 강남 선호", "서연이 예약 담당", "예산은 1인 3만원"]
+    : ["Gangnam preferred", "Sera will book", "Budget under $30"];
+  return `
+    <article class="real-preview-card">
+      <strong>${t("summary.title")}</strong>
+      <div class="summary-preview">
+        ${items.map((item) => `<span>${item}</span>`).join("")}
+      </div>
+    </article>
+  `;
+}
+
+function renderRewriteScreenshot() {
+  return `
+    <article class="real-preview-card">
+      <strong>${state.lang === "ko" ? "Message Rewriter" : "Message Rewriter"}</strong>
+      <div class="rewrite-preview">
+        <span>${state.lang === "ko" ? "Before" : "Before"}</span>
+        <p>${state.lang === "ko" ? "왜 답이 늦어?" : "Why are you replying late?"}</p>
+        <span>${state.lang === "ko" ? "After" : "After"}</span>
+        <p>${state.lang === "ko" ? "요즘 답이 늦어서 조금 신경 쓰였어." : "I noticed replies have been slower lately."}</p>
+      </div>
+    </article>
+  `;
+}
+
+function renderPlanningScreenshot() {
+  return `
+    <article class="real-preview-card wide-preview">
+      <strong>${t("planning.meetup")}</strong>
+      <div class="planning-preview">
+        <div><span>${state.lang === "ko" ? "참여자" : "People"}</span><b>${state.lang === "ko" ? "4명" : "4 people"}</b></div>
+        <div><span>${state.lang === "ko" ? "추천 시간" : "Best time"}</span><b>${state.lang === "ko" ? "토요일 오후 3시" : "Saturday 3 PM"}</b></div>
+        <div><span>${state.lang === "ko" ? "장소" : "Place"}</span><b>${state.lang === "ko" ? "조용한 카페" : "Quiet cafe"}</b></div>
+        <div><span>${state.lang === "ko" ? "예상 비용" : "Estimated cost"}</span><b>${state.lang === "ko" ? "1인 3만원 안쪽" : "Under $30 each"}</b></div>
+      </div>
+    </article>
+  `;
+}
+
+function renderPollScreenshot() {
+  return `
+    <article class="real-preview-card wide-preview">
+      <strong>${t("planning.group")}</strong>
+      <div class="poll-preview">
+        <span>${state.lang === "ko" ? "금 7시: 지수 가능, 민호 어려움" : "Fri 7 PM: Jisoo works, Minho difficult"}</span>
+        <span>${state.lang === "ko" ? "토 3시: 3명 가능, 실내 선호" : "Sat 3 PM: 3 available, indoor preferred"}</span>
+        <b>${state.lang === "ko" ? "최종 추천: 토요일 오후 3시" : "Recommendation: Saturday 3 PM"}</b>
+      </div>
+    </article>
+  `;
+}
+
+function insightStatement(title, body) {
+  return `
+    <article class="statement-card">
+      <strong>${title}</strong>
+      <p>${body}</p>
+    </article>
+  `;
+}
+
 function renderConversationTool() {
   return `
+    <section class="product-page view-enter">
+      ${renderProductIntro({
+        kicker: "01",
+        title: t("conversationPage.title"),
+        body: t("conversationPage.body"),
+        action: t("conversationPage.action"),
+        route: "conversations",
+      })}
+      <div class="real-preview-grid">
+        ${renderChatScreenshot()}
+        ${renderSummaryScreenshot()}
+        ${renderRewriteScreenshot()}
+      </div>
+    </section>
     <section class="tool-layout view-enter">
       <article class="panel input-panel">
         <h2>${t("reply.title")}</h2>
         <p>${t("reply.desc")}</p>
         <textarea id="reply-input" placeholder="${t("reply.placeholder")}"></textarea>
         <div class="tone-grid">
-          ${toneKeys.map((key) => `<button type="button" data-tone="${key}" class="${key === "soft" ? "is-active" : ""}">${t(`reply.tones.${key}`)}</button>`).join("")}
+          ${toneKeys.map((key) => `<button type="button" data-tone="${key}" class="${key === "friendly" ? "is-active" : ""}">${t(`reply.tones.${key}`)}</button>`).join("")}
         </div>
         <div class="control-row">
           <button class="secondary-action" type="button" data-sample="reply">${t("common.example")}</button>
@@ -312,8 +417,52 @@ function renderConversationTool() {
   `;
 }
 
-function renderScheduleTool() {
+function renderRelationshipsTool() {
   return `
+    <section class="product-page view-enter">
+      ${renderProductIntro({
+        kicker: "02",
+        title: t("relationships.title"),
+        body: t("relationships.body"),
+        action: t("relationships.action"),
+        route: "relationships",
+      })}
+      <div class="relationship-grid">
+        ${insightStatement(t("relationships.frequency"), t("relationships.frequencyBody"))}
+        ${insightStatement(t("relationships.trend"), t("relationships.trendBody"))}
+        ${insightStatement(t("relationships.pattern"), t("relationships.patternBody"))}
+      </div>
+      <article class="panel wide">
+        <div class="section-heading">
+          <span class="section-kicker">Timeline</span>
+          <h3>${t("relationships.timeline")}</h3>
+        </div>
+        ${timeline([
+          t("relationships.timeline1"),
+          t("relationships.timeline2"),
+          t("relationships.timeline3"),
+          t("relationships.timeline4"),
+        ])}
+      </article>
+    </section>
+  `;
+}
+
+function renderPlanningTool() {
+  return `
+    <section class="product-page view-enter">
+      ${renderProductIntro({
+        kicker: "03",
+        title: t("planning.title"),
+        body: t("planning.body"),
+        action: t("planning.action"),
+        route: "planning",
+      })}
+      <div class="real-preview-grid two">
+        ${renderPlanningScreenshot()}
+        ${renderPollScreenshot()}
+      </div>
+    </section>
     <section class="tool-layout view-enter">
       <article class="panel input-panel wide">
         <h2>${t("schedule.title")}</h2>
@@ -333,8 +482,20 @@ function renderScheduleTool() {
 
 function renderInsightsTool() {
   return `
-    <section class="tool-layout view-enter">
-      <article class="panel input-panel">
+    <section class="product-page view-enter">
+      ${renderProductIntro({
+        kicker: "04",
+        title: t("insights.title"),
+        body: t("insights.desc"),
+        action: t("insights.action"),
+        route: "insights",
+      })}
+      <div class="relationship-grid">
+        ${insightStatement(t("insights.balance"), t("insights.balanceBody"))}
+        ${insightStatement(t("insights.fatigue"), t("insights.fatigueBody"))}
+        ${insightStatement(t("insights.topics"), t("insights.topicsBody"))}
+      </div>
+      <article class="panel input-panel wide">
         <h2>${t("insights.title")}</h2>
         <p>${t("insights.desc")}</p>
         <textarea id="insight-input" placeholder="${t("samples.insight")}"></textarea>
@@ -343,31 +504,8 @@ function renderInsightsTool() {
           <button class="primary-action" type="button" data-run="insight">${t("common.analyze")}</button>
         </div>
       </article>
-      <article class="panel result-panel" id="insight-result">
+      <article class="panel result-panel wide" id="insight-result">
         ${renderInsights(t("samples.insight"))}
-      </article>
-    </section>
-  `;
-}
-
-function renderMood() {
-  const moods = ["calm", "bright", "tired", "tender", "focus"];
-  return `
-    <section class="mood-grid view-enter">
-      <article class="panel">
-        <h2>${t("mood.title")}</h2>
-        <p>${t("mood.desc")}</p>
-        <div class="mood-selector">
-          ${moods.map((mood) => `<button type="button" class="${state.mood === mood ? "is-active" : ""}" data-mood="${mood}">${t(`mood.${mood}`)}</button>`).join("")}
-        </div>
-      </article>
-      <article class="panel mood-orbit">
-        <div class="temperature-ring large"><span>${moodTemperature()}°</span></div>
-        <h3>${t(`mood.${state.mood}`)}</h3>
-      </article>
-      <article class="panel wide">
-        <h3>${t("mood.log")}</h3>
-        ${timeline([t("home.status"), t("home.reminder2"), t("home.reminder3")])}
       </article>
     </section>
   `;
@@ -457,12 +595,6 @@ function bindEvents() {
     render();
   }));
 
-  app.querySelectorAll("[data-mood]").forEach((button) => button.addEventListener("click", () => {
-    state.mood = button.dataset.mood;
-    saveSession();
-    render();
-  }));
-
   app.querySelectorAll("[data-tone]").forEach((button) => button.addEventListener("click", () => {
     app.querySelectorAll("[data-tone]").forEach((item) => item.classList.remove("is-active"));
     button.classList.add("is-active");
@@ -513,30 +645,30 @@ function runInsight() {
 }
 
 function renderReplyCards(text) {
-  const activeTone = app.querySelector("[data-tone].is-active")?.dataset.tone || "soft";
+  const activeTone = app.querySelector("[data-tone].is-active")?.dataset.tone || "friendly";
   const base = text.replace(/\s+/g, " ").trim();
   const prefix = {
     ko: {
-      soft: "부담 주고 싶지는 않지만",
-      natural: "상황이 조금 바뀌어서",
+      friendly: "편하게 말하자면",
+      casual: "나 살짝 부탁이 있어.",
       professional: "일정 관련해 조정 요청드립니다.",
       romantic: "네가 불편하지 않았으면 해서 조심스럽게 말할게.",
-      cute: "나 살짝 부탁이 있어.",
-      calm: "천천히 이야기해도 괜찮아.",
-      concise: "일정 조정 가능할까?",
+      supportive: "네 상황도 이해하고 싶어서",
+      honest: "솔직히 말하면",
+      direct: "핵심만 말하면",
     },
     en: {
-      soft: "I do not want to make this feel heavy, but",
-      natural: "Something shifted on my side, so",
+      friendly: "To say this comfortably,",
+      casual: "Small favor, if that is okay.",
       professional: "I would like to request a schedule adjustment.",
       romantic: "I want to say this gently because I care about how it feels.",
-      cute: "Small favor, if that is okay.",
-      calm: "No rush, but I wanted to share this clearly.",
-      concise: "Could we adjust the plan?",
+      supportive: "I want to understand your side too, so",
+      honest: "Honestly,",
+      direct: "To be direct,",
     },
   };
   const lang = state.lang || "ko";
-  const versions = [activeTone, "calm", "concise"].filter((value, index, arr) => arr.indexOf(value) === index);
+  const versions = [activeTone, "supportive", "direct"].filter((value, index, arr) => arr.indexOf(value) === index);
   return `
     <div class="response-stack">
       ${versions.map((tone, index) => `
@@ -774,12 +906,8 @@ function timeline(items) {
 }
 
 function icon(item) {
-  const icons = { home: "⌂", conversations: "✎", schedule: "◷", insights: "◇", mood: "◌", settings: "⚙" };
+  const icons = { conversations: "✎", relationships: "◇", planning: "◷", insights: "◌", settings: "⚙" };
   return `<i aria-hidden="true">${icons[item]}</i>`;
-}
-
-function moodTemperature() {
-  return { calm: "23.8", bright: "26.4", tired: "20.9", tender: "25.1", focus: "22.7" }[state.mood];
 }
 
 function sanitize(value) {
