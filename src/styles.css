@@ -71,7 +71,7 @@ h3 { font-size: clamp(18px, 1.6vw, 23px); line-height: 1.28; letter-spacing: 0; 
   min-height: 100vh;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(340px, .72fr);
-  gap: clamp(16px, 3vw, 32px);
+  gap: clamp(18px, 3vw, 34px);
   padding: clamp(16px, 3vw, 34px);
 }
 
@@ -82,7 +82,10 @@ h3 { font-size: clamp(18px, 1.6vw, 23px); line-height: 1.28; letter-spacing: 0; 
 .statement-card,
 .insight-card,
 .response-card,
-.calendar-card {
+.calendar-card,
+.landing-section,
+.journey-step,
+.trust-item {
   border: 1px solid var(--line);
   background: var(--surface);
   border-radius: var(--radius);
@@ -197,6 +200,150 @@ body[data-theme="light"] .primary-action {
 
 .daily-item strong { font-size: 15px; }
 .daily-item p { font-size: 13px; line-height: 1.5; }
+
+.landing-section {
+  grid-column: 1 / -1;
+  padding: clamp(26px, 4vw, 54px);
+}
+
+.story-section,
+.trust-section {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: clamp(22px, 4vw, 52px);
+  align-items: center;
+}
+
+.preview-section {
+  display: grid;
+  gap: 24px;
+}
+
+.section-copy {
+  display: grid;
+  gap: 12px;
+}
+
+.section-copy h2 {
+  max-width: 680px;
+}
+
+.section-copy p {
+  font-size: 17px;
+  max-width: 520px;
+}
+
+.journey-steps,
+.trust-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.journey-step {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 4px 14px;
+  padding: 18px;
+  box-shadow: none;
+  background: var(--surface-strong);
+}
+
+.journey-step span {
+  grid-row: span 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 850;
+}
+
+.journey-step p,
+.trust-item p {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.product-preview-grid {
+  display: grid;
+  grid-template-columns: 1.08fr .92fr .8fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.chat-preview,
+.summary-preview-card,
+.mini-calendar-preview {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  padding: 20px;
+  min-height: 230px;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.chat-preview strong,
+.summary-preview-card strong,
+.mini-calendar-preview strong {
+  font-size: 15px;
+}
+
+.chat-bubble {
+  max-width: 84%;
+  padding: 12px 14px;
+  border-radius: 16px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  line-height: 1.5;
+}
+
+.chat-bubble.outgoing {
+  justify-self: end;
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.summary-preview-card span {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 11px 12px;
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.mini-calendar-preview div {
+  margin-top: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  gap: 8px;
+  background: var(--surface);
+}
+
+.mini-calendar-preview b {
+  font-size: clamp(24px, 3vw, 36px);
+}
+
+.mini-calendar-preview small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.trust-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.trust-item {
+  padding: 18px;
+  box-shadow: none;
+  background: var(--surface-strong);
+}
 
 .auth-card {
   align-self: center;
@@ -564,7 +711,10 @@ body[data-theme="dark"] .daily-item,
 body[data-theme="dark"] .statement-card,
 body[data-theme="dark"] .insight-card,
 body[data-theme="dark"] .response-card,
-body[data-theme="dark"] .calendar-card {
+body[data-theme="dark"] .calendar-card,
+body[data-theme="dark"] .landing-section,
+body[data-theme="dark"] .journey-step,
+body[data-theme="dark"] .trust-item {
   box-shadow: none;
 }
 
@@ -579,6 +729,12 @@ body[data-theme="dark"] .tone-grid button,
 body[data-theme="dark"] .settings-list button {
   background: #151515;
   border-color: rgba(255,255,255,.28);
+}
+
+body[data-theme="dark"] .chat-bubble.outgoing,
+body[data-theme="dark"] .journey-step span {
+  background: #ffffff;
+  color: #000000;
 }
 
 .availability-summary,
@@ -649,7 +805,14 @@ body[data-theme="dark"] .settings-list button {
 
   .mini-profile { display: none; }
   .dashboard-strip,
-  .daily-stack {
+  .daily-stack,
+  .story-section,
+  .trust-section {
+    grid-template-columns: 1fr;
+  }
+
+  .product-preview-grid,
+  .trust-grid {
     grid-template-columns: 1fr;
   }
 
@@ -689,15 +852,22 @@ body[data-theme="dark"] .settings-list button {
   .dashboard-strip,
   .work-grid,
   .product-page,
-  .settings-grid {
+  .settings-grid,
+  .auth-screen {
     gap: 14px;
   }
 
   .panel,
   .statement-card,
-  .daily-item {
+  .daily-item,
+  .landing-section {
     padding: 18px;
     border-radius: 18px;
+  }
+
+  .auth-copy p,
+  .section-copy p {
+    font-size: 16px;
   }
 
   .insight-grid,

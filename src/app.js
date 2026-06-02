@@ -100,8 +100,83 @@ function renderAuthScreen() {
         <button class="ghost-action" type="button" data-guest>${t("auth.guest")}</button>
         <p class="security-note">${t("auth.secure")}<br>${t("auth.demoNotice")}</p>
       </section>
+      ${renderLandingStory()}
+      ${renderLandingProductPreview()}
+      ${renderLandingTrust()}
     </main>
   `;
+}
+
+function renderLandingStory() {
+  return `
+    <section class="landing-section story-section">
+      <div class="section-copy">
+        <span class="section-kicker">${t("landing.storyKicker")}</span>
+        <h2>${t("landing.storyTitle")}</h2>
+        <p>${t("landing.storyBody")}</p>
+      </div>
+      <div class="journey-steps">
+        ${journeyStep("1", t("landing.step1"), t("landing.step1Body"))}
+        ${journeyStep("2", t("landing.step2"), t("landing.step2Body"))}
+        ${journeyStep("3", t("landing.step3"), t("landing.step3Body"))}
+      </div>
+    </section>
+  `;
+}
+
+function renderLandingProductPreview() {
+  return `
+    <section class="landing-section preview-section">
+      <div class="section-copy">
+        <span class="section-kicker">${t("landing.productKicker")}</span>
+        <h2>${t("landing.productTitle")}</h2>
+      </div>
+      <div class="product-preview-grid">
+        <article class="chat-preview">
+          <strong>${t("landing.reply")}</strong>
+          <p class="chat-bubble incoming">${t("landing.chatIncoming")}</p>
+          <p class="chat-bubble outgoing">${t("landing.chatOutgoing")}</p>
+        </article>
+        <article class="summary-preview-card">
+          <strong>${t("landing.summary")}</strong>
+          <span>${t("landing.summaryPoint1")}</span>
+          <span>${t("landing.summaryPoint2")}</span>
+          <span>${t("landing.summaryPoint3")}</span>
+        </article>
+        <article class="mini-calendar-preview">
+          <strong>${t("landing.plan")}</strong>
+          <div>
+            <b>${t("landing.calendarBest")}</b>
+            <small>${t("landing.previewPlan")}</small>
+          </div>
+        </article>
+      </div>
+    </section>
+  `;
+}
+
+function renderLandingTrust() {
+  return `
+    <section class="landing-section trust-section">
+      <div class="section-copy">
+        <span class="section-kicker">${t("landing.trustKicker")}</span>
+        <h2>${t("landing.trustTitle")}</h2>
+      </div>
+      <div class="trust-grid">
+        ${trustItem(t("settings.privacy"), t("landing.trustPrivacy"))}
+        ${trustItem(t("auth.secure"), t("landing.trustSecurity"))}
+        ${trustItem(t("schedule.calendarTitle"), t("landing.trustControl"))}
+      </div>
+    </section>
+  `;
+}
+
+function journeyStep(number, title, body) {
+  return `<article class="journey-step"><span>${number}</span><strong>${title}</strong><p>${body}</p></article>`;
+}
+
+function trustItem(title, body) {
+  return `<article class="trust-item"><strong>${title}</strong><p>${body}</p></article>`;
 }
 
 function renderShell() {
